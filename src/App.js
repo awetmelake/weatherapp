@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import { Provider } from "react-redux";
 
-import Localweather from "./components/Localweather.js";
+import Weather from "./components/Weather.js";
 
 import store from "./store";
 
@@ -10,7 +10,7 @@ function App() {
   return (
     <Provider store={store}>
       <div className="App">
-        <Localweather />
+        <Weather />
       </div>
     </Provider>
   );

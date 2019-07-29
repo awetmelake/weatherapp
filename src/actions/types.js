@@ -1,3 +1,2 @@
-export const FETCH_CURRENT = 'FETCH_CURRENT';
-export const ADD_LOCATION = 'ADD_LOCATION';
-export const REMOVE_LOCATION = 'REMOVE_LOCATION';
+export const FETCH_CURRENT = "FETCH_CURRENT";
+export const FETCH_WEEKLY = "FETCH_WEEKLY";

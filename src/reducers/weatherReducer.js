@@ -1,8 +1,8 @@
-import { FETCH_CURRENT, ADD_LOCATION, REMOVE_LOCATION } from "../actions/types";
+import { FETCH_CURRENT, FETCH_WEEKLY } from "../actions/types";
 
 const intialState = {
-  locations: [],
-  local: {}
+  current: {},
+  weekly: {}
 };
 
 export default (state = intialState, action) => {
@@ -10,17 +10,12 @@ export default (state = intialState, action) => {
     case FETCH_CURRENT:
       return {
         ...state,
-        local: action.payload
+        current: action.payload
       };
-    case ADD_LOCATION:
+    case FETCH_WEEKLY:
       return {
         ...state,
-        locations: action.payload
-      };
-    case REMOVE_LOCATION:
-      return {
-        ...state,
-        locations: action.payload
+        weekly: action.payload
       };
     default:
       return state;

@@ -1,2 +1,3 @@
 export const FETCH_CURRENT = "FETCH_CURRENT";
 export const FETCH_WEEKLY = "FETCH_WEEKLY";
+export const CHANGE_FOCUS = "CHANGE_FOCUS";

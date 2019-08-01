@@ -1,6 +1,7 @@
 * {
   margin: 0;
   padding: 0;
+  user-select: none;
 }
 
 body {
@@ -9,8 +10,8 @@ body {
 }
 
 .App {
-  margin: auto;
-  width: 80%;
+  margin: 50px auto;
+  width: 40%;
 }
 
 .btn,
@@ -18,51 +19,40 @@ button {
   cursor: pointer;
 }
 
-.current-forecast {
+.current {
   margin: auto;
-  padding: 20px;
-  width: 500px;
   margin-bottom: 20px;
 }
 
-#current-weather-one {
+.current-weather-one {
+
 }
 
-#current-weather-two {
+.current-weather-two {
   text-align: right;
 }
 
-.weekly-forecast {
-  width: 550px;
+.weekly {
 }
 
 .weekly-forecast-item {
   float: left;
   padding: 1em;
-  background-color: white;
   margin-right: 5px;
-  border: 1px solid gray;
-}
-
-.weekly-forecast-item-7 {
-  margin-right: 50px;
 }
 
 .current-main {
- width: fit-content;
- position: relative;
- left: 200px;
- top: 20px;
+  width: fit-content;
+  margin: auto;
 }
 
 .current-temp {
   width: fit-content;
   font-size: 70px;
+  float: right;
 }
 
 .current-icon {
   position: relative;
-  bottom:  90px;
-  right: 100px;
   float: left;
 }

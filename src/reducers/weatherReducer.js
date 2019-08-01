@@ -1,4 +1,4 @@
-import { FETCH_CURRENT, FETCH_WEEKLY } from "../actions/types";
+import { FETCH_CURRENT, FETCH_WEEKLY, CHANGE_FOCUS } from "../actions/types";
 
 export default (state = intialState, action) => {
   switch (action.type) {
@@ -12,12 +12,19 @@ export default (state = intialState, action) => {
         ...state,
         weekly: action.payload
       };
+    case CHANGE_FOCUS:
+      return {
+        ...state,
+        focus: action.payload
+      };
     default:
       return state;
   }
 };
 
+// verbose initalstate so initial render is not based on an empty state, causing undefined variables as api fetch is in process
 const intialState = {
+  focus: 0,
   current: {
     coord: { lon: 0, lat: 0 },
     weather: [{ id: 0, main: "", description: "", icon: "" }],

@@ -1,6 +1,4 @@
-import { FETCH_CURRENT, FETCH_WEEKLY } from "./types";
-
-// TODO:
+import { FETCH_CURRENT, FETCH_WEEKLY, CHANGE_FOCUS } from "./types";
 
 let lat, long;
 let api = "26fca3f9bb1b046809163a15b71d418b";
@@ -46,4 +44,11 @@ export const fetchWeekly = payload => dispatch => {
   } else {
     alert("please enable location services");
   }
+};
+
+export const changeFocus = payload => dispatch => {
+  dispatch({
+    type: CHANGE_FOCUS,
+    payload
+  });
 };

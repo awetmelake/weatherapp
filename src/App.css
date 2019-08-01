@@ -1,16 +1,68 @@
-body {
-  height: 100vh;
-  background-image: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+* {
+  margin: 0;
+  padding: 0;
 }
 
-.btn {
-  cursor: pointer;
+body {
+  height: 100vh;
+  background-image: linear-gradient(0deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
 }
 
 .App {
-  text-align: left;
   margin: auto;
+  width: 80%;
+}
+
+.btn,
+button {
+  cursor: pointer;
+}
+
+.current-forecast {
+  margin: auto;
+  padding: 20px;
+  width: 500px;
+  margin-bottom: 20px;
+}
+
+#current-weather-one {
+}
+
+#current-weather-two {
+  text-align: right;
+}
+
+.weekly-forecast {
+  width: 550px;
+}
+
+.weekly-forecast-item {
+  float: left;
+  padding: 1em;
+  background-color: white;
+  margin-right: 5px;
+  border: 1px solid gray;
+}
+
+.weekly-forecast-item-7 {
+  margin-right: 50px;
+}
+
+.current-main {
+ width: fit-content;
+ position: relative;
+ left: 200px;
+ top: 20px;
+}
+
+.current-temp {
+  width: fit-content;
+  font-size: 70px;
+}
+
+.current-icon {
+  position: relative;
+  bottom:  90px;
+  right: 100px;
+  float: left;
 }

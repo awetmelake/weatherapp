@@ -2,28 +2,29 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
+import { changeFocus } from "../actions/weatherActions";
 class Weeklyforecast extends Component {
+  componentWillMount() {
+    this.props.changeFocus(2);
+  }
   render() {
-    const { f } = this.props;
-    let counter = 0;
+    const { f, getTime } = this.props;
     return (
-      <div className="weekly-forecast">
+      <div className="weekly">
         {this.props.weekly.list.map(item => {
-          if (counter > 7) {
-            counter = 0;
-          }
+          let date = new Date(item.dt * 1000);
           return (
-            <div
-              className={`weekly-forecast-item weekly-forecast-item-${counter++} btn`}
-              key={item.dt}
-            >
+            <div className={`weekly-forecast-item btn`} key={item.dt}>
               <img
+                className="weekly-icon"
                 src={`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
                 alt="weather icon"
-                width='40px'
+                width="40px"
               />
-              {/* {<p>{f(item.main.temp_min)}</p>
-              <p>{f(item.main.temp_max)}</p>} */}
+
+              <p>{date.getDate() + " " + date.getHours()}</p>
+              <p>{f(item.main.temp_max)}</p>
+              <p>{f(item.main.temp_min)}</p>
             </div>
           );
         })}
@@ -42,5 +43,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  {}
+  { changeFocus }
 )(Weeklyforecast);

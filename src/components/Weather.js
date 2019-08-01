@@ -7,15 +7,34 @@ import Currentforecast from "./Currentforecast";
 import Weeklyforecast from "./Weeklyforecast";
 
 class Weather extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      metric: false
+    };
+  }
   componentWillMount() {
     this.props.fetchCurrent();
     this.props.fetchWeekly();
+
   }
 
-  //convert kalvin to fahrenheight
-  f = temp => Math.floor(((temp - 273.15) * 9) / 5 + 32);
+  toggleMetric = () => {
+    this.setState({
+      metric: !this.state.metric
+    });
+  };
 
-  convertSpeed = speed => Math.floor(speed * 2.23694);
+  //convert kalvin to fahrenheight
+  f = temp => Math.round(((temp - 273.15) * 9) / 5 + 32);
+  //convert kalvin to celcius
+  c = temp => Math.round(temp - 273.15);
+
+  //convert wind from m/s to mph
+  windMph = speed => Math.round(speed * 2.23694);
+
+  //convert wind from m/s to kph
+  windKph = speed => Math.round(speed * 3.6);
 
   getDay = () => {
     let days = [
@@ -27,20 +46,35 @@ class Weather extends Component {
       "Friday",
       "Saturday"
     ];
-    let date = new Date();
+    let date = new Date(this.props.current.dt * 1000);
     return days[date.getDay()];
   };
 
+  getTime = () => {
+    let date = new Date(this.props.current.dt * 1000);
+    return date.getHours();
+  };
+  
   render() {
     return (
       <div>
         <Currentforecast
-          convertSpeed={this.convertSpeed}
+          windKph={this.windKph}
+          windMph={this.windMph}
           f={this.f}
+          c={this.c}
           current={this.props.current}
           getDay={this.getDay}
+          getTime={this.getTime}
+          metric={this.state.metric}
+          toggleMetric={this.toggleMetric}
         />
-        <Weeklyforecast f={this.f} />
+        <Weeklyforecast
+          getTime={this.getTime}
+          f={this.f}
+          metric={this.state.metric}
+          toggleMetric={this.toggleMetric}
+        />
       </div>
     );
   }

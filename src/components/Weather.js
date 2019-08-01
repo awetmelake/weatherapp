@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
+// TODO: future forecasts projects for any day other than the current should have the day of the week instead of the time displayed on the Weeklyforecastitem component, add functionality based on user inputted location (zip), organize Weeklyforecastitems possibly make it a carousel
+
 import { fetchCurrent, fetchWeekly } from "../actions/weatherActions";
 import Currentforecast from "./Currentforecast";
 import Weeklyforecast from "./Weeklyforecast";
@@ -51,7 +53,7 @@ class Weather extends Component {
 
   getTime = date => {
     date = date.getHours();
-    return date > 12 ? `${(date -= 12)} pm` : `${(date = date)} am`;
+    return date > 12 ? `${(date -= 12)} pm` : `${date} am`;
   };
 
   //returns the relevant weather object based on the value of focus in the redux store which dictates what forecast the user would like to see

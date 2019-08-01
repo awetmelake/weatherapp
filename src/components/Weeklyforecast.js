@@ -4,10 +4,10 @@ import PropTypes from "prop-types";
 
 import { changeFocus } from "../actions/weatherActions";
 import Weeklyforecastitem from "./Weeklyforecastitem.js";
-// Renders future coming forecast information. Forecast information is displayed for every 3 hours of the upcoming 5 days. Allows for clicking at a specific hour to reveal an indepth display of the forecast at that time.
+// Renders future forecast information. Forecast information is displayed for every 3 hours of the upcoming 5 days. Allows for clicking at a specific hour to reveal an indepth display of the forecast at that time.
 class Weeklyforecast extends Component {
   render() {
-    const { f, changeFocus, weekly, current, getTime, getDay } = this.props;
+    const { f, changeFocus, weekly, current, getTime } = this.props;
     return (
       <div className="weekly">
         <div
@@ -25,8 +25,13 @@ class Weeklyforecast extends Component {
           <p>{f(current.main.temp)}</p>
         </div>
 
-        {/* icons for future forecasts */}
-        <Weeklyforecastitem changeFocus={changeFocus} f={f} weekly={weekly} />
+        {/* displays for future forecasts */}
+        <Weeklyforecastitem
+          getTime={getTime}
+          changeFocus={changeFocus}
+          f={f}
+          weekly={weekly}
+        />
       </div>
     );
   }

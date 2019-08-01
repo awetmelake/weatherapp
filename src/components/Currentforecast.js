@@ -11,27 +11,56 @@ class Currentforecast extends Component {
   handleClick = e => {};
 
   render() {
-    const { convertSpeed, f, current, getDay } = this.props;
+    const {
+      windKph,
+      windMph,
+      f,
+      current,
+      getDay,
+      getTime,
+      c,
+      toggleMetric,
+      metric
+    } = this.props;
+
     const { name, weather, main, wind } = current;
     return (
-      <div className="current-forecast">
+      <div className="current">
         <div id="current-weather-one">
           <h1>{name}</h1>
           <h4>{getDay()}</h4>
+          <h4>{getTime()}</h4>
           <h4>{weather[0].description}</h4>
-          <div className="current-main">
-            <div className="current-temp">{f(main.temp)}° F</div>
-            <img
-              className="current-icon"
-              src={`http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`}
-              alt="weather icon"
-            />
-          </div>
         </div>
-        <br />
+
+        <div className="current-main">
+          <img
+            className="current-icon"
+            src={`http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`}
+            alt="weather icon"
+          />
+
+          {/*toggle metric/imperial for temperature*/}
+          {metric ? (
+            <div onClick={toggleMetric.bind(this)} className="current-temp btn">
+              {c(main.temp)}° C
+            </div>
+          ) : (
+            <div onClick={toggleMetric.bind(this)} className="current-temp btn">
+              {f(main.temp)}° F
+            </div>
+          )}
+        </div>
+
         <div id="current-weather-two">
           <div>Humidity: {main.humidity}%</div>
-          <div>Wind: {convertSpeed(wind.speed)} mph</div>
+
+          {/*toggle metric/imperial for wind*/}
+          {metric ? (
+            <div>Wind: {windKph(wind.speed)} kph</div>
+          ) : (
+            <div>Wind: {windMph(wind.speed)} mph</div>
+          )}
         </div>
       </div>
     );

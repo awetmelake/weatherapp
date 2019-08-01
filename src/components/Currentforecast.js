@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
+//Renders current forecast retreived from api, or the predicted forecast of the time the user selected if the value of state.focus is not 0. It is 0 by default
 class Currentforecast extends Component {
   handleChange = e => {
     this.setState({
       zipCode: e.target.value
     });
   };
-
-  handleClick = e => {};
 
   render() {
     const {
@@ -22,14 +21,14 @@ class Currentforecast extends Component {
       toggleMetric,
       metric
     } = this.props;
+    const { weather, main, wind, clouds } = current;
+    let date = new Date(current.dt * 1000);
 
-    const { name, weather, main, wind } = current;
     return (
       <div className="current">
-        <div id="current-weather-one">
-          <h1>{name}</h1>
-          <h4>{getDay()}</h4>
-          <h4>{getTime()}</h4>
+        <div className="current-weather-one">
+          <h4>{getDay(date)}</h4>
+          <h4>{getTime(date)}</h4>
           <h4>{weather[0].description}</h4>
         </div>
 
@@ -52,7 +51,8 @@ class Currentforecast extends Component {
           )}
         </div>
 
-        <div id="current-weather-two">
+        <div className="current-weather-two">
+          <div>Cloudiness: {clouds.all}%</div>
           <div>Humidity: {main.humidity}%</div>
 
           {/*toggle metric/imperial for wind*/}

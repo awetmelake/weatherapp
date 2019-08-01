@@ -6,6 +6,7 @@ import { fetchCurrent, fetchWeekly } from "../actions/weatherActions";
 import Currentforecast from "./Currentforecast";
 import Weeklyforecast from "./Weeklyforecast";
 
+//Main component, contains access to redux store and converting functons. state is passed as props to child components
 class Weather extends Component {
   constructor(props) {
     super(props);
@@ -16,7 +17,6 @@ class Weather extends Component {
   componentWillMount() {
     this.props.fetchCurrent();
     this.props.fetchWeekly();
-
   }
 
   toggleMetric = () => {
@@ -36,7 +36,7 @@ class Weather extends Component {
   //convert wind from m/s to kph
   windKph = speed => Math.round(speed * 3.6);
 
-  getDay = () => {
+  getDay = date => {
     let days = [
       "Sunday",
       "Monday",
@@ -46,24 +46,33 @@ class Weather extends Component {
       "Friday",
       "Saturday"
     ];
-    let date = new Date(this.props.current.dt * 1000);
     return days[date.getDay()];
   };
 
-  getTime = () => {
-    let date = new Date(this.props.current.dt * 1000);
-    return date.getHours();
+  getTime = date => {
+    date = date.getHours();
+    return date > 12 ? `${(date -= 12)} pm` : `${(date = date)} am`;
   };
-  
+
+  //returns the relevant weather object based on the value of focus in the redux store which dictates what forecast the user would like to see
+  getCurrent = () => {
+    if (this.props.focus === 0) {
+      return this.props.current;
+    } else {
+      return this.props.weekly.list[this.props.focus - 1];
+    }
+  };
+
   render() {
     return (
       <div>
+        <h1>{this.props.current.name}</h1>
         <Currentforecast
           windKph={this.windKph}
           windMph={this.windMph}
           f={this.f}
           c={this.c}
-          current={this.props.current}
+          current={this.getCurrent()}
           getDay={this.getDay}
           getTime={this.getTime}
           metric={this.state.metric}
@@ -71,6 +80,7 @@ class Weather extends Component {
         />
         <Weeklyforecast
           getTime={this.getTime}
+          getDay={this.getDay}
           f={this.f}
           metric={this.state.metric}
           toggleMetric={this.toggleMetric}
@@ -82,12 +92,14 @@ class Weather extends Component {
 
 Weather.propTypes = {
   current: PropTypes.object.isRequired,
-  weekly: PropTypes.object.isRequired
+  weekly: PropTypes.object.isRequired,
+  focus: PropTypes.number.isRequired
 };
 
 const mapStateToProps = state => ({
   current: state.weather.current,
-  weekly: state.weather.weekly
+  weekly: state.weather.weekly,
+  focus: state.weather.focus
 });
 
 export default connect(

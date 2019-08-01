@@ -3,41 +3,42 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import { changeFocus } from "../actions/weatherActions";
+import Weeklyforecastitem from "./Weeklyforecastitem.js";
+// Renders future coming forecast information. Forecast information is displayed for every 3 hours of the upcoming 5 days. Allows for clicking at a specific hour to reveal an indepth display of the forecast at that time.
 class Weeklyforecast extends Component {
-  componentWillMount() {
-    this.props.changeFocus(2);
-  }
   render() {
-    const { f, getTime } = this.props;
+    const { f, changeFocus, weekly, current, getTime, getDay } = this.props;
     return (
       <div className="weekly">
-        {this.props.weekly.list.map(item => {
-          let date = new Date(item.dt * 1000);
-          return (
-            <div className={`weekly-forecast-item btn`} key={item.dt}>
-              <img
-                className="weekly-icon"
-                src={`http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
-                alt="weather icon"
-                width="40px"
-              />
+        <div
+          onClick={changeFocus.bind(this, 0)}
+          className={`weekly-forecast-item btn`}
+        >
+          <img
+            className="weekly-icon"
+            src={`http://openweathermap.org/img/wn/${current.weather[0].icon}@2x.png`}
+            alt="weather icon"
+            width="40px"
+          />
 
-              <p>{date.getDate() + " " + date.getHours()}</p>
-              <p>{f(item.main.temp_max)}</p>
-              <p>{f(item.main.temp_min)}</p>
-            </div>
-          );
-        })}
+          <p>now</p>
+          <p>{f(current.main.temp)}</p>
+        </div>
+
+        {/* icons for future forecasts */}
+        <Weeklyforecastitem changeFocus={changeFocus} f={f} weekly={weekly} />
       </div>
     );
   }
 }
 
 Weeklyforecast.propTypes = {
+  current: PropTypes.object.isRequired,
   weekly: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
+  current: state.weather.current,
   weekly: state.weather.weekly
 });
 

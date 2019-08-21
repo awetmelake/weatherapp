@@ -1,8 +1,11 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
+import { toggleMetric } from "../../actions/unitActions";
+
 //Renders current forecast retreived from api, or the predicted forecast of the time the user selected if the value of state.focus is not 0. It is 0 by default
-class Currentforecast extends Component {
+class CurrentForecast extends Component {
   handleChange = e => {
     this.setState({
       zipCode: e.target.value
@@ -41,11 +44,11 @@ class Currentforecast extends Component {
 
           {/*toggle metric/imperial for temperature*/}
           {metric ? (
-            <div onClick={toggleMetric.bind(this)} className="current-temp btn">
+            <div onClick={e => toggleMetric()} className="current-temp btn">
               {c(main.temp)}° C
             </div>
           ) : (
-            <div onClick={toggleMetric.bind(this)} className="current-temp btn">
+            <div onClick={e => toggleMetric()} className="current-temp btn">
               {f(main.temp)}° F
             </div>
           )}
@@ -67,8 +70,16 @@ class Currentforecast extends Component {
   }
 }
 
-Currentforecast.propTypes = {
-  current: PropTypes.object.isRequired
+CurrentForecast.propTypes = {
+  current: PropTypes.object.isRequired,
+  metric: PropTypes.bool.isRequired
 };
 
-export default Currentforecast;
+const mapStateToProps = state => ({
+  metric: state.unit.metric
+});
+
+export default connect(
+  mapStateToProps,
+  { toggleMetric }
+)(CurrentForecast);

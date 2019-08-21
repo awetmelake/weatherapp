@@ -1,54 +1,73 @@
-import { FETCH_CURRENT, FETCH_WEEKLY, CHANGE_FOCUS } from "./types";
+import { FETCHED_CURRENT, FETCHED_WEEKLY, CHANGED_FOCUS } from "./types";
 
-let lat, long;
 let api = "26fca3f9bb1b046809163a15b71d418b";
 
-export const fetchCurrent = payload => dispatch => {
-  //fetch data for current and weekly forecast on load, send to store
-  if ("geolocation" in navigator) {
-    navigator.geolocation.getCurrentPosition(pos => {
-      lat = pos.coords.latitude;
-      long = pos.coords.longitude;
-      fetch(
-        `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${api}`
-      )
-        .then(res => res.json())
-        .then(data => {
-          dispatch({
-            type: FETCH_CURRENT,
-            payload: data
-          });
+export const fetchCurrent = payload => (dispatch, getState) => {
+  const userZip = getState().location.zipCode;
+  const userLocation = getState().location.coords;
+
+  //prioritize user zipcode over coordinates
+  if (userZip !== null) {
+    fetch(
+      `http://api.openweathermap.org/data/2.5/weather?zip=${userZip}&appid=${api}`
+    ).then(res =>
+      res.json().then(data => {
+        dispatch({
+          type: FETCHED_CURRENT,
+          payload: data
         });
-    });
+      })
+    );
   } else {
-    alert("please enable location services");
+    fetch(
+      `http://api.openweathermap.org/data/2.5/weather?lat=${userLocation.lat}&lon=${userLocation.long}&appid=${api}`
+    )
+      .then(res => res.json())
+      .then(data => {
+        dispatch({
+          type: FETCHED_CURRENT,
+          payload: data
+        });
+      });
   }
 };
 
-export const fetchWeekly = payload => dispatch => {
-  if ("geolocation" in navigator) {
-    navigator.geolocation.getCurrentPosition(pos => {
-      lat = pos.coords.latitude;
-      long = pos.coords.longitude;
-      fetch(
-        `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=${api}`
-      )
-        .then(res => res.json())
-        .then(data => {
-          dispatch({
-            type: FETCH_WEEKLY,
-            payload: data
-          });
+export const fetchWeekly = payload => (dispatch, getState) => {
+  const userZip = getState().location.zipCode;
+  const userLocation = getState().location.coords;
+
+  //prioritize user zipcode over coords
+  if (userZip !== null) {
+    fetch(
+      `http://api.openweathermap.org/data/2.5/forecast?zip=${userZip}&appid=${api}`
+    ).then(res =>
+      res.json().then(data => {
+        dispatch({
+          type: FETCHED_WEEKLY,
+          payload: data
         });
-    });
+      })
+    );
   } else {
-    alert("please enable location services");
+    fetch(
+      `http://api.openweathermap.org/data/2.5/forecast?lat=${userLocation.lat}&lon=${userLocation.long}&appid=${api}`
+    )
+      .then(res => res.json())
+      .then(data => {
+        dispatch({
+          type: FETCHED_WEEKLY,
+          payload: data
+        });
+      });
   }
 };
 
-export const changeFocus = payload => dispatch => {
-  dispatch({
-    type: CHANGE_FOCUS,
-    payload
-  });
+export const changeFocus = payload => (dispatch, getState) => {
+  const currentFocus = getState().weather.focus;
+  if (payload !== currentFocus) {
+    dispatch({
+      type: CHANGED_FOCUS,
+      payload
+    });
+  }
 };

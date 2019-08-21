@@ -1,18 +1,18 @@
-import { FETCH_CURRENT, FETCH_WEEKLY, CHANGE_FOCUS } from "../actions/types";
+import { FETCHED_CURRENT, FETCHED_WEEKLY, CHANGED_FOCUS } from "../actions/types";
 
 export default (state = intialState, action) => {
   switch (action.type) {
-    case FETCH_CURRENT:
+    case FETCHED_CURRENT:
       return {
         ...state,
         current: action.payload
       };
-    case FETCH_WEEKLY:
+    case FETCHED_WEEKLY:
       return {
         ...state,
         weekly: action.payload
       };
-    case CHANGE_FOCUS:
+    case CHANGED_FOCUS:
       return {
         ...state,
         focus: action.payload

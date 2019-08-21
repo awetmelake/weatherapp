@@ -5,30 +5,26 @@ import PropTypes from "prop-types";
 // TODO: future forecasts projects for any day other than the current should have the day of the week instead of the time displayed on the Weeklyforecastitem component, add functionality based on user inputted location (zip), organize Weeklyforecastitems possibly make it a carousel
 
 import { fetchCurrent, fetchWeekly } from "../actions/weatherActions";
-import Currentforecast from "./Currentforecast";
-import Weeklyforecast from "./Weeklyforecast";
+// import { toggleMetric } from "../actions/unitActions";
+import { fetchUserLocation } from "../actions/locationActions";
+import CurrentForecast from "./current/CurrentForecast";
+import Weeklyforecast from "./weekly/Weeklyforecast";
 
 //Main component, contains access to redux store and converting functons. state is passed as props to child components
 class Weather extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      metric: false
-    };
+  componentDidMount() {
+    this.props
+      .fetchUserLocation()
+      .then(() => {
+        this.props.fetchCurrent();
+        this.props.fetchWeekly();
+      })
+      .catch(err => alert(err));
   }
-  componentWillMount() {
-    this.props.fetchCurrent();
-    this.props.fetchWeekly();
-  }
-
-  toggleMetric = () => {
-    this.setState({
-      metric: !this.state.metric
-    });
-  };
 
   //convert kalvin to fahrenheight
   f = temp => Math.round(((temp - 273.15) * 9) / 5 + 32);
+
   //convert kalvin to celcius
   c = temp => Math.round(temp - 273.15);
 
@@ -69,7 +65,7 @@ class Weather extends Component {
     return (
       <div>
         <h1>{this.props.current.name}</h1>
-        <Currentforecast
+        <CurrentForecast
           windKph={this.windKph}
           windMph={this.windMph}
           f={this.f}
@@ -77,15 +73,12 @@ class Weather extends Component {
           current={this.getCurrent()}
           getDay={this.getDay}
           getTime={this.getTime}
-          metric={this.state.metric}
-          toggleMetric={this.toggleMetric}
         />
         <Weeklyforecast
           getTime={this.getTime}
           getDay={this.getDay}
           f={this.f}
-          metric={this.state.metric}
-          toggleMetric={this.toggleMetric}
+          c={this.c}
         />
       </div>
     );
@@ -106,5 +99,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchCurrent, fetchWeekly }
+  { fetchCurrent, fetchWeekly, fetchUserLocation }
 )(Weather);

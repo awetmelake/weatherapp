@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import { toggleMetric } from "../../actions/unitActions";
+import { fetchUserZip } from "../../actions/locationActions";
 
 //Renders current forecast retreived from api, or the predicted forecast of the time the user selected if the value of state.focus is not 0. It is 0 by default
 class CurrentForecast extends Component {
@@ -17,38 +18,38 @@ class CurrentForecast extends Component {
       windKph,
       windMph,
       f,
-      current,
+      focus,
       getDay,
       getTime,
       c,
       toggleMetric,
       metric
     } = this.props;
-    const { weather, main, wind, clouds } = current;
-    let date = new Date(current.dt * 1000);
+    const { weather, main, wind, clouds, dt } = focus;
+    let date = new Date(dt * 1000);
 
     return (
       <div className="current">
         <div className="current-weather-one">
-          <h4>{getDay(date)}</h4>
-          <h4>{getTime(date)}</h4>
-          <h4>{weather[0].description}</h4>
+          <h5>{getDay(date)}</h5>
+          <h5>{getTime(date)}</h5>
+          <h5>{weather[0].description}</h5>
         </div>
 
         <div className="current-main">
           <img
             className="current-icon"
-            src={`http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`}
+            src={`https://openweathermap.org/img/wn/${weather[0].icon}@2x.png`}
             alt="weather icon"
           />
 
           {/*toggle metric/imperial for temperature*/}
           {metric ? (
-            <div onClick={e => toggleMetric()} className="current-temp btn">
+            <div onClick={e => toggleMetric()} className="current-temp ">
               {c(main.temp)}° C
             </div>
           ) : (
-            <div onClick={e => toggleMetric()} className="current-temp btn">
+            <div onClick={e => toggleMetric()} className="current-temp ">
               {f(main.temp)}° F
             </div>
           )}
@@ -58,7 +59,6 @@ class CurrentForecast extends Component {
           <div>Cloudiness: {clouds.all}%</div>
           <div>Humidity: {main.humidity}%</div>
 
-          {/*toggle metric/imperial for wind*/}
           {metric ? (
             <div>Wind: {windKph(wind.speed)} kph</div>
           ) : (
@@ -71,15 +71,16 @@ class CurrentForecast extends Component {
 }
 
 CurrentForecast.propTypes = {
-  current: PropTypes.object.isRequired,
+  focus: PropTypes.object.isRequired,
   metric: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
-  metric: state.unit.metric
+  metric: state.unit.metric,
+  focus: state.weather.focus
 });
 
 export default connect(
   mapStateToProps,
-  { toggleMetric }
+  { toggleMetric, fetchUserZip }
 )(CurrentForecast);

@@ -8,33 +8,61 @@ import Weeklyforecastitem from "./Weeklyforecastitem.js";
 // Renders future forecast information. Forecast information is displayed for every 3 hours of the upcoming 5 days. Allows for clicking at a specific hour to reveal an indepth display of the forecast at that time.
 class Weeklyforecast extends Component {
   render() {
-    const { c, f, changeFocus, weekly, current, getTime, metric } = this.props;
+    const {
+      c,
+      f,
+      changeFocus,
+      weekly,
+      current,
+      getTime,
+      metric,
+      getDay
+    } = this.props;
     return (
-      <div className="weekly">
-        <div
-          onClick={e => changeFocus(0)}
-          className={`weekly-forecast-item btn`}
-        >
-          <img
-            className="weekly-icon"
-            src={`http://openweathermap.org/img/wn/${current.weather[0].icon}@2x.png`}
-            alt="weather icon"
-            width="40px"
-          />
-
-          <p>now</p>
-          <p>{f(current.main.temp)}</p>
+      <div
+        id="carouselExampleControls"
+        className="carousel slide"
+        data-ride="carousel"
+        data-interval="false"
+      >
+        <div className="carousel-inner">
+          {
+            <Weeklyforecastitem
+              current={current}
+              weekly={weekly}
+              getTime={getTime}
+              getDay={getDay}
+              changeFocus={changeFocus}
+              f={f}
+              c={c}
+              metric={metric}
+            />
+          }
         </div>
-
-        {/* displays for future forecasts */}
-        <Weeklyforecastitem
-          getTime={getTime}
-          changeFocus={changeFocus}
-          f={f}
-          c={c}
-          weekly={weekly}
-          metric={metric}
-        />
+        <a
+          className="carousel-control-prev"
+          href="#carouselExampleControls"
+          role="button"
+          data-slide="prev"
+        >
+          <span
+            className="carousel-control-prev-icon"
+            aria-hidden="true"
+          ></span>
+          <span className="sr-only">Previous</span>
+        </a>
+        <a
+          className="carousel-control-next"
+          href="#carouselExampleControls"
+          role="button"
+          data-slide="next"
+        >
+          <span
+            className="carousel-control-next-icon"
+            aria-hidden="true"
+          ></span>
+          <span className="sr-only">Next</span>
+        </a>
       </div>
     );
   }

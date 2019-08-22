@@ -5,16 +5,23 @@
 }
 
 body {
-  height: 100vh;
+  height: calc(100vh - 50px);
   background-image: linear-gradient(0deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
 }
 
 .App {
   margin: 50px auto;
   width: 40%;
+  min-width: 600px;
 }
 
-.btn,
+.loading-message {
+  position: absolute;
+  top: 30%;
+  width: 100px;
+  left: calc(50vw - 50px);
+}
+
 button {
   cursor: pointer;
 }
@@ -24,21 +31,29 @@ button {
   margin-bottom: 20px;
 }
 
-.current-weather-one {
+.current-temp {
+  cursor: pointer;
+}
 
+.current-weather-one {
 }
 
 .current-weather-two {
+  float: right;
+  width: 100%;
   text-align: right;
 }
 
 .weekly {
+  position: relative;
+  top: 100px;
 }
 
 .weekly-forecast-item {
   float: left;
   padding: 1em;
-  margin-right: 5px;
+
+  cursor: pointer;
 }
 
 .current-main {
@@ -55,4 +70,53 @@ button {
 .current-icon {
   position: relative;
   float: left;
+}
+
+.carousel-inner {
+  width: fit-content;
+  margin: auto;
+  height: 200px;
+}
+
+.carousel,
+.slide {
+  height: 300px !important;
+  position: relative;
+  top: 100px;
+  margin: auto;
+}
+
+.carousel-control-prev {
+  left: -50px;
+}
+
+.carousel-control-next {
+  right: -50px;
+}
+
+.carousel-inner {
+  position: relative;
+  bottom: 50px;
+}
+
+.change-location-form {
+  float: right;
+  position: relative;
+  top: 10px;
+}
+
+.change-location-form input {
+  background-color: #2cb5e8;
+  border: none;
+  border-bottom: 1px solid black;
+  outline: none;
+}
+
+.change-location-form button {
+  font-size: 15px;
+  border: none;
+  padding: 3px;
+  margin-left: 10px;
+  border-radius: 5px;
+  background-color: #1fc8db;
 }

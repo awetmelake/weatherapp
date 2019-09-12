@@ -21,6 +21,7 @@ class Weather extends Component {
   };
 
   componentDidMount() {
+    this.props.fetchUserZip(null)
     //weather fetch functions
     this.props
       .fetchUserLocation()

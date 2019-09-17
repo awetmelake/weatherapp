@@ -10,12 +10,24 @@ import Weather from "../Weather.js";
 import { fetchCurrent, fetchWeekly } from "../../actions/weatherActions";
 import { fetchUserLocation, setUserZip } from "../../actions/locationActions";
 
-
 class App extends React.Component {
-  render () {
+  render() {
     return (
-      <div className="App">
-        <Weather />
+      <div>
+        <div className="App">
+          <Weather />
+        </div>
+        <footer>
+          <p style={{ position: "absolute", bottom: "0", left: "20px" }}>
+            <a href="https://openweathermap.org/api">
+              Powered by Open Weather Map API
+            </a>
+            {" | "}
+            <a href="https://github.com/awetmelake/weatherapp">REPO</a>
+            <br />
+            Made by Awet Melake
+          </p>
+        </footer>
       </div>
     );
   }
@@ -24,13 +36,12 @@ class App extends React.Component {
     this.props
       .fetchUserLocation()
       .then(() => {
-         this.props.fetchCurrent();
-         this.props.fetchWeekly();
+        this.props.fetchCurrent();
+        this.props.fetchWeekly();
       })
       .catch(err => console.log(err));
   }
-};
-
+}
 
 export default connect(
   null,

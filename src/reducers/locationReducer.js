@@ -17,7 +17,7 @@ export default (state = intialState, action) => {
     case FETCHED_USER_ZIP:
       return {
         ...state,
-        zipCode: action.payload
+        zipCode: action.payload !== "null" ? action.payload : null
       };
     default:
       return state;

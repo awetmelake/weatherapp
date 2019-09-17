@@ -17,6 +17,7 @@ const Weeklyforecastitem = ({
   // current weather item, push into array as first item
   section.push(
     <div
+      key={current.dt}
       onClick={e => changeFocus(current)}
       className="weekly-forecast-item"
       style={{ position: "relative", bottom: 0 }}
@@ -58,7 +59,7 @@ const Weeklyforecastitem = ({
       section = [];
     }
 
-    //push individual item into section[]
+    //push individual item into section array
     section.push(
       <div
         onClick={e => changeFocus(item)}

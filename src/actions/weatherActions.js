@@ -4,49 +4,47 @@ let api = "26fca3f9bb1b046809163a15b71d418b";
 
 export const fetchCurrent = payload => (dispatch, getState) => {
   const userZip = localStorage.zipcode;
-  const userLocation = getState().location.coords;
-
-  //prioritize zipcode over coordinates
-  var fetchedData;
-  return new Promise((resolve, reject) => {
+  const coords = getState().location.coords;
+  let fetchedData = null;
     fetch(
       `https://api.openweathermap.org/data/2.5/weather?zip=${userZip}&appid=${api}`
     )
-      .then(res =>
+      .then(res => {
         res.json().then(data => {
-          fetchedData = data;
-          //if zip was invalid fetch by coords and resolve
-          if (data.message === "city not found") {
-            dispatch({
-              type: "FETCH_ERROR",
-              payload: "invalid zipcode"
+        if(data.cod === "404"){
+          dispatch({
+            type: "FETCH_ERROR" , payload: "invalid zipcode"
+          })
+          fetch(
+            `https://api.openweathermap.org/data/2.5/weather?lat=${coords.lat}&lon=${coords.long}&appid=${api}`
+          )
+            .then(res => res.json())
+            .then(data => {
+              fetchedData = data;
+              dispatch({
+                type: FETCHED_CURRENT, payload: fetchedData
+              })
             });
-            fetch(
-              `https://api.openweathermap.org/data/2.5/weather?lat=${userLocation.lat}&lon=${userLocation.long}&appid=${api}`
-            )
-              .then(res => res.json())
-              .then(data => {
-                fetchedData = data;
-              });
-          }
-        })
-      )
+        }else {
+          fetchedData = data;
+          dispatch({
+            type: FETCHED_CURRENT, payload: fetchedData
+          })
+        }
+        });
+      })
       .catch(err => {
-        console.log(err);
+        dispatch({
+          type: "FETCH_ERROR" , payload: "invalid zipcode"
+        })
       });
-    setTimeout(() => {
-      dispatch({
-        type: FETCHED_CURRENT,
-        payload: fetchedData
-      });
-      resolve();
-    }, 500);
-  });
+
+
 };
 
 export const fetchWeekly = type => (dispatch, getState) => {
   const userZip = localStorage.zipcode;
-  const userLocation = getState().location.coords;
+  const coords = getState().location.coords;
 
   //prioritize user zipcode over coords
   var fetchedData;
@@ -56,9 +54,9 @@ export const fetchWeekly = type => (dispatch, getState) => {
     res.json().then(data => {
       fetchedData = data;
       //if zip was invalid fetch by coords
-      if ((data.message = "city not found")) {
+      if (data.cod = "404") {
         fetch(
-          `https://api.openweathermap.org/data/2.5/forecast?lat=${userLocation.lat}&lon=${userLocation.long}&appid=${api}`
+          `https://api.openweathermap.org/data/2.5/forecast?lat=${coords.lat}&lon=${coords.long}&appid=${api}`
         )
           .then(res => res.json())
           .then(data => {

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import { toggleMetric } from "../../actions/unitActions";
-import { fetchUserZip } from "../../actions/locationActions";
+import { setUserZip } from "../../actions/locationActions";
 
 //Renders current forecast retreived from api, or the predicted forecast of the time the user selected if the value of state.focus is not 0. It is 0 by default
 class CurrentForecast extends Component {
@@ -82,5 +82,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { toggleMetric, fetchUserZip }
+  { toggleMetric, setUserZip }
 )(CurrentForecast);

@@ -18,6 +18,7 @@ class Weeklyforecast extends Component {
       metric,
       getDay
     } = this.props;
+
     return (
       <div
         id="carouselExampleControls"
@@ -39,6 +40,7 @@ class Weeklyforecast extends Component {
             />
           }
         </div>
+
         <a
           className="carousel-control-prev"
           href="#carouselExampleControls"
@@ -51,6 +53,7 @@ class Weeklyforecast extends Component {
           ></span>
           <span className="sr-only">Previous</span>
         </a>
+
         <a
           className="carousel-control-next"
           href="#carouselExampleControls"
@@ -61,6 +64,7 @@ class Weeklyforecast extends Component {
             className="carousel-control-next-icon"
             aria-hidden="true"
           ></span>
+
           <span className="sr-only">Next</span>
         </a>
       </div>

@@ -2,12 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import AOS from "aos";
-import "aos/dist/aos.css"; // You can also use <link> for styles
-
 //actions
 import { fetchCurrent, fetchWeekly } from "../actions/weatherActions";
-import { fetchUserLocation, fetchUserZip } from "../actions/locationActions";
+import { fetchUserLocation, setUserZip } from "../actions/locationActions";
 
 //components
 import CurrentForecast from "./current/CurrentForecast";
@@ -20,19 +17,6 @@ class Weather extends Component {
     err: ""
   };
 
-  componentDidMount() {
-    this.props.fetchUserZip(null)
-    //weather fetch functions
-    this.props
-      .fetchUserLocation()
-      .then(() => {
-        this.props.fetchCurrent().then(() => {
-          this.props.fetchWeekly();
-        });
-      })
-      .catch(err => alert(err));
-  }
-
   handleChange = e => {
     this.setState({
       zipcode: e.target.value
@@ -43,22 +27,21 @@ class Weather extends Component {
     e.preventDefault();
     const zipcode = parseInt(this.state.zipcode, 10);
     if (this.state.zipcode.length > 4 && !isNaN(zipcode)) {
-      this.props.fetchUserZip(zipcode);
+      this.props.setUserZip(zipcode);
       //recall fetch functions if user entered zipcode
       this.props
         .fetchUserLocation()
         .then(() => {
-          this.props.fetchCurrent().then(() => {
-            this.props.fetchWeekly();
-            AOS.refreshHard();
-          });
+          this.props.fetchCurrent();
+          this.props.fetchWeekly();
+
           //reset state
           this.setState({
             zipcode: "",
             err: ""
           });
         })
-        .catch(err => alert(err));
+        .catch(err => console.log(err));
     } else {
       this.setState({
         err: "invalid entry"
@@ -97,9 +80,8 @@ class Weather extends Component {
   };
 
   render() {
-    AOS.init();
     const { err, current, weekly } = this.props;
-    return weekly.message == 0 ? (
+    return weekly.message === 0 ? (
       <h3 className="loading-message">LOADING...</h3>
     ) : (
       <div data-aos-duration="10000" data-aos="fade-in">
@@ -152,5 +134,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchCurrent, fetchWeekly, fetchUserLocation, fetchUserZip }
+  { fetchCurrent, fetchWeekly, fetchUserLocation, setUserZip }
 )(Weather);

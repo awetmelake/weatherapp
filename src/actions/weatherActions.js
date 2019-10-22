@@ -1,11 +1,12 @@
-import { FETCHED_CURRENT, FETCHED_WEEKLY, CHANGED_FOCUS } from "./types";
+import { FETCHED_CURRENT, FETCHED_WEEKLY, CHANGED_FOCUS, LOADING_INIT, LOADING_COMPLETE } from "./types";
 
 let api = "26fca3f9bb1b046809163a15b71d418b";
 
 export const fetchCurrent = payload => (dispatch, getState) => {
   const userZip = localStorage.zipcode;
   const coords = getState().location.coords;
-  let fetchedData = null;
+  let fetchedData;
+  dispatch({type: LOADING_INIT})
     fetch(
       `https://api.openweathermap.org/data/2.5/weather?zip=${userZip}&appid=${api}`
     )
@@ -24,12 +25,15 @@ export const fetchCurrent = payload => (dispatch, getState) => {
               dispatch({
                 type: FETCHED_CURRENT, payload: fetchedData
               })
+              dispatch({type: LOADING_COMPLETE})
+              
             });
         }else {
           fetchedData = data;
           dispatch({
             type: FETCHED_CURRENT, payload: fetchedData
           })
+          dispatch({type: LOADING_COMPLETE})
         }
         });
       })

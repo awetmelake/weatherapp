@@ -15,13 +15,6 @@ body {
   min-width: 600px;
 }
 
-.loading-message {
-  position: absolute;
-  top: 30%;
-  width: 100px;
-  left: calc(50vw - 50px);
-}
-
 button {
   cursor: pointer;
 }

@@ -4,7 +4,10 @@ import { connect } from "react-redux";
 // styles
 import "./App.css";
 
+// components
 import Weather from "../Weather.js";
+import Footer from "../Footer.js";
+import Spinner from "../Spinner/Spinner.js";
 
 // actions
 import { fetchCurrent, fetchWeekly } from "../../actions/weatherActions";
@@ -12,23 +15,16 @@ import { fetchUserLocation, setUserZip } from "../../actions/locationActions";
 
 class App extends React.Component {
   render() {
+    if(this.props.loading){
+      return <Spinner/>
+    }
     return (
-      <div>
-        <div className="App">
+      <React.Fragment>
+        <div className="App" data-aos-duration="10000" data-aos="fade-in">
           <Weather />
         </div>
-        <footer>
-          <p style={{ position: "absolute", bottom: "0", left: "20px" }}>
-            <a href="https://openweathermap.org/api">
-              Powered by Open Weather Map API
-            </a>
-            {" | "}
-            <a href="https://github.com/awetmelake/weatherapp">REPO</a>
-            <br />
-            Made by Awet Melake
-          </p>
-        </footer>
-      </div>
+        <Footer />
+      </React.Fragment>
     );
   }
 
@@ -43,7 +39,10 @@ class App extends React.Component {
   }
 }
 
+const mapStateToProps = state => ({
+  loading: state.ui.loading
+})
 export default connect(
-  null,
+  mapStateToProps,
   { fetchCurrent, fetchWeekly, fetchUserLocation, setUserZip }
 )(App);

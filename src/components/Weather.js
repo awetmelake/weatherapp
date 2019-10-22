@@ -81,9 +81,7 @@ class Weather extends Component {
 
   render() {
     const { err, current, weekly } = this.props;
-    return weekly.message === 0 ? (
-      <h3 className="loading-message">LOADING...</h3>
-    ) : (
+    return (
       <div data-aos-duration="10000" data-aos="fade-in">
         <form
           onSubmit={e => this.handleSubmit(e)}
